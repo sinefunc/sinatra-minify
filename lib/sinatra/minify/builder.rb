@@ -60,7 +60,8 @@ module Sinatra
       def js_assets_all( set )
         ret = ''
         assets(:js, set).each do |script|
-          ret << "<script src=\"#{script[:url]}\" type=\"text/javascript\"></script>\n"
+          mtime = File.mtime(script[:path]).to_i
+          ret << "<script src=\"#{script[:url]}?#{mtime}\" type=\"text/javascript\"></script>\n"
         end
         ret
       end
@@ -84,8 +85,9 @@ module Sinatra
 
       def css_assets_all(set)
         ret = ''
-        (assets_config :css) [set].each do |filename|
-          ret << "<link rel='stylesheet' href='#{settings.css_url}/#{filename}' media='screen' />\n"
+        assets(:css, set).each do |sheet|
+          mtime = File.mtime(sheet[:path]).to_i
+          ret << "<link rel='stylesheet' href='#{settings.css_url}/#{sheet[:url]}?#{mtime}' media='screen' />\n"
         end
         ret
       end

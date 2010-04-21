@@ -12,8 +12,12 @@ Gem::Specification.new do |s|
   s.date = %q{2010-04-22}
   s.description = %q{sinatra-minify is an extension for Sinatra to compress assets.}
   s.email = %q{info@sinefunc.com}
+  s.extra_rdoc_files = [
+    "README.md"
+  ]
   s.files = [
-    "README.md",
+    ".gitignore",
+     "README.md",
      "Rakefile",
      "VERSION",
      "lib/sinatra/minify.rb",
@@ -26,16 +30,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{CSS/JS compressor for Sinatra}
-  s.test_files = [
-    "test/routes/css_test.rb",
-     "test/spawns.rb",
-     "test/stories/site_test.rb",
-     "test/stories_helper.rb",
-     "test/test_helper.rb",
-     "test/unit/company_test.rb",
-     "test/unit/task_test.rb",
-     "test/unit/user_test.rb"
-  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
