@@ -1,5 +1,3 @@
-require 'jsmin'
-
 module Sinatra
   module Minify
     module Helpers
@@ -120,6 +118,7 @@ module Sinatra
       end
 
       def minify_js( src )
+        require 'jsmin'
         JSMin.minify src
       end
 
