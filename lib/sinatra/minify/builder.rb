@@ -156,7 +156,7 @@ module Sinatra
         else
           path = settings.css_path
         end
-        root_path(path.split('/').inject([]) { |arr, item| arr << item unless item.empty?; arr })
+        root_path path.squeeze('/')
       end
 
       # Returns the URL for a given filename and a type.
@@ -175,10 +175,7 @@ module Sinatra
         end
         # Remove the js_path from it (/home/rsc/project/public/js/aa/lol.js => aa/lol.js)
         url = File.join(prefix, filename.split(get_path type).join(''))
-
-        # Remove duplicate slashes
-        url = url.split('/').inject([]) { |arr, item| arr << item unless item.empty?; arr }
-        '/' + url.join('/')
+        '/' + url.squeeze('/')
       end
 
       # Returns a list of assets of a given type for a given set.
