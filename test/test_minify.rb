@@ -9,6 +9,10 @@ class TestMinify < Test::Unit::TestCase
     last_response.body
   end
 
+  def builder
+    Sinatra::Minify::Builder.new app
+  end
+
   should "rock pants off" do
     get '/'
     assert_match "Hello", output
@@ -32,6 +36,17 @@ class TestMinify < Test::Unit::TestCase
     should "Include the minified script" do
       get '/foo'
       assert_match /base.min.js\?/, output
+    end
+  end
+
+  describe "Building files" do
+    def setup
+      builder.clean
+      builder.build
+    end
+
+    should "Build properly" do
+      assert true
     end
   end
 end

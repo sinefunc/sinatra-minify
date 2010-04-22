@@ -19,6 +19,17 @@ module Sinatra
         File.join(root, *args)
       end
 
+      # Deletes all minified files.
+      def clean
+        [:js, :css].each do |type|
+          assets_config(type).keys.each do |set|
+            prefix = type == :js ? settings.js_path : settings.css_path
+            path = root_path File.join(prefix, "#{set}.min." + type.to_s)
+            File.unlink path if File.exists? path
+          end
+        end
+      end
+
       def build
         out = []
         [:js, :css].each do |type|
@@ -109,7 +120,7 @@ module Sinatra
 
       # Returns the raw consolidated CSS/JS contents of a given type/set
       def combine( type, set )
-        assets(type, set).map { |asset| File.open(asset[:path]).read }.join "\n"
+        assets(type, set).map { |asset| File.open(asset[:path]).read }.join "\n".strip
       end
 
       # Returns compressed code
@@ -129,9 +140,12 @@ module Sinatra
         src.gsub!(/\/\*(.*?)\*\//, "")
         src.gsub!(/\} /, "}\n")       
         src.gsub!(/\n$/, "")          
-        src.gsub!(/ \{ /, " {")       
-        src.gsub!(/; \}/, "}") 
-        src
+        src.gsub!(/[ \t]*\{[ \t]*/, "{")
+        src.gsub!(/;[ \t]*\}/, "}") 
+
+        src.gsub!(/[ \t]*([,|{|}|>|:|;])[ \t]*/,"\\1") # Tersify
+        src.gsub!(/[ \t]*\n[ \t]*/, "") # Hardcore mode (no NLs)
+        src.strip
       end
 
       def minify_js( src )

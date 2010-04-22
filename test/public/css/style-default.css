@@ -1,0 +1,86 @@
+/* Reset */
+div, dl, dt, dd, ul, ol, li, form,
+fieldset, input, th, td                 { margin: 0; padding: 0; }
+pre, p, blockquote, h1, h2, h3, h4, h5,
+h6                                      { margin: 1em 0 1em 0; }
+blockquote                              { border-left: solid 2px #ccc; padding: 0 1em; margin-left: 0.2em; color: #888; }
+h1                                      { font-size: 1.4em; }
+h2                                      { font-size: 1.3em; }
+h3                                      { font-size: 1.2em; }
+h4                                      { font-size: 1.1em; }
+h5                                      { font-size: 0.9em; }
+h6                                      { font-size: 0.9em; }
+ol, ul                                  { margin-left: 2em; }
+
+/* Body & wrapper */
+html, body                              { margin: 0; padding: 0; }
+body, td, input, textarea               { font-family: arial, helvetica, sans-serif; font-size: 1em; }
+body                                    { font-size: 0.85em; line-height: 1.6em; background: #6ba241; color: #333; }
+#all                                    { margin: 0 auto; width: auto; position: relative; }
+
+/* Links */
+a                                       { color: #393; text-decoration: none; font-weight: bold; padding: 1px; }
+a:visited                               { color: #393; }
+a:hover                                 { color: #393; text-decoration: underline; }
+a img                                   { border: 0; }
+
+/* Common layout */
+#what-we-do, #who-we-are, #content      { overflow: hidden; }
+#header>.c, #what-we-do>.c,
+#who-we-are>.c, #footer>.c              { width: 940px; margin: 0 auto; overflow: hidden; }
+
+/* Common styling */
+#header                                 { background: #f8fbf4 url(bg-header.png) center bottom repeat-x; padding: 10px 0 130px 0; }
+#what-we-do                             { background: #f0f6e9; padding: 30px 0 0 0; }
+#who-we-are                             { background: #6ba241 url(bg-stripe.png) center top repeat-x; padding: 90px 0 30px 0; color: #d3e3c6; text-shadow: 1px 1px #5c843d; }
+#footer                                 { background: #444; padding: 50px 0 50px 0; color: #bbb; }
+
+/* Header */
+#header                                 { overflow: hidden; }
+#header #logo                           { float: left; margin-right: 75px; margin-left: 75px; }
+#header h1                              { background: url(text.png) 0 0 no-repeat; width: 511px; height: 95px; text-indent: -9999px; margin: 0; padding: 0; display: block; float: left; }
+#contact-header                         { border-bottom: solid 1px #ccc; margin-bottom: 90px; padding: 0 0 4px 0; text-align: right; color: #aaa;
+                                          font-size: 0.9em; }
+#contact-header em                      { margin: 0 12px 0 10px; color: #ccc; }
+#contact-header a                       { color: #888; text-decoration: underline; }
+#contact-header a:hover                 { color: #6b6; }
+
+/* Content */
+#content h2                             { float: left; width: 240px; }
+#content ul, #content li                { margin: 0; padding: 0; display: block; }
+#what-we-do>.c ul                       { float: left; width: 700px; overflow: hidden; }
+
+/* What we do */
+#what-we-do li                          { float: left; width: 340px; }
+#what-we-do li.left                     { margin-right: 20px; }
+
+#what-we-do li h3                       { font-size: 1.4em; }
+#what-we-do li h4                       { font-family: georgia, times, serif; font-style: italic; color: #777; font-weight: normal;
+                                          font-size: 1.2em; line-height: 1.4em; margin: 0.8em 0 0 0; }
+#what-we-do li p                        { margin: 3px 0 2em 0; }
+#what-we-do #do-build,
+#what-we-do #do-scale                   { padding-bottom: 1.5em; }
+
+/* What we do: h2 */
+#what-we-do h2                          { background: url(text.png) 0 -400px no-repeat; height: 18px; text-indent: -9999px; margin: 0; padding: 0;
+                                          display: block; }
+
+/* What we do: h3 */
+#what-we-do h3                          { background: url(text.png) 0 0 no-repeat; height: 21px; text-indent: -9999px; margin: 0; padding: 0;
+                                          display: block; }
+#do-build h3                            { background-position: 0 -200px; }
+#do-scale h3                            { background-position: 0 -250px; }
+#do-craft h3                            { background-position: 0 -300px; }
+#do-train h3                            { background-position: 0 -350px; }
+
+/* Who we are */
+#who-we-are>.c div                      { float: left; width: 560px; overflow: hidden; }
+#who-we-are h3                          { font-size: 1.4em; line-height: 1.5em; color: white; background: url(text.png) 0 -550px no-repeat;
+                                          width: 521px; height: 73px; text-indent: -9999px; margin: 0; padding: 0; display: block; padding-bottom: 7px; }
+#who-we-are h2                          { background: url(text.png) 0 -450px no-repeat; height: 18px; text-indent: -9999px; margin: 0; padding: 0;
+                                          display: block; }
+
+/* Footer */
+#footer                                 { text-align: center; }
+#footer a                               { font-size: 1.3em; color: white; font-weight: normal; }
+#footer span { display: block; font-size: 1.2em; color: #888; margin-bottom: 3px; font-family: georgia; font-style: italic; }
