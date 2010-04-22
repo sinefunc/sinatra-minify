@@ -1,6 +1,8 @@
 module Sinatra
   module Minify
     class Builder
+      GlobNoMatch = Class.new(StandardError)
+
       attr :type
       
       def self.clean
@@ -33,6 +35,11 @@ module Sinatra
 
         files = globs.map { |glob| 
           list = Dir[glob]
+
+          if list.empty? and glob.include?('*')
+            raise GlobNoMatch, "The spec `#{glob}` does not match any files."
+          end
+
           list.empty? ? glob : list
         }.flatten.uniq
 
