@@ -124,7 +124,6 @@ module Sinatra
         end
       end
 
-<<<<<<< HEAD
       def minify_css( src )
         src.gsub! /\s+/, " "
         src.gsub! /\/\*(.*?)\*\//, ""
@@ -134,18 +133,6 @@ module Sinatra
         src.gsub! /;[ \t]*\}/, "}"
         src.gsub! /[ \t]*([,|{|}|>|:|;])[ \t]*/,"\\1" # Tersify
         src.gsub! /[ \t]*\n[ \t]*/, "" # Hardcore mode (no NLs)
-=======
-      def minify_css(src)
-        src.gsub!(/\s+/, " ")         
-        src.gsub!(/\/\*(.*?)\*\//, "")
-        src.gsub!(/\} /, "}\n")       
-        src.gsub!(/\n$/, "")          
-        src.gsub!(/[ \t]*\{[ \t]*/, "{")
-        src.gsub!(/;[ \t]*\}/, "}") 
-
-        src.gsub!(/[ \t]*([,|{|}|>|:|;])[ \t]*/,"\\1") # Tersify
-        src.gsub!(/[ \t]*\n[ \t]*/, "") # Hardcore mode (no NLs)
->>>>>>> ad444475ec551442761b1ec38235e5fa4c939cce
         src.strip
       end
 
