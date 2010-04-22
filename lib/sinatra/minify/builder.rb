@@ -47,7 +47,7 @@ module Sinatra
       # Returns the file sets for a given type as defined in the `assets.yml` config file.
       #
       # Params:
-      #  - `type` (Symbol/string) - Can be either `:javascripts` or `:stylesheets`
+      #  - `type` (Symbol/string) - Can be either `:js` or `:css`
       #
       def assets_config(type)
         ::YAML::load(File.open(root_path "config/assets.yml")) [type.to_s]
