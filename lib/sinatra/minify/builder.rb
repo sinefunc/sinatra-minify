@@ -83,8 +83,7 @@ module Sinatra
       def js_assets_all( set )
         ret = ''
         assets(:js, set).each do |script|
-          mtime = File.mtime(script[:path]).to_i
-          ret << "<script src='#{script[:url]}?#{mtime}' type='text/javascript'></script>\n"
+          ret << "<script src='#{script[:url]}' type='text/javascript'></script>\n"
         end
         ret
       end
@@ -110,12 +109,7 @@ module Sinatra
       end
 
       def css_assets_all(set)
-        ret = ''
-        assets(:css, set).each do |sheet|
-          mtime = File.mtime(sheet[:path]).to_i
-          ret << "<link rel='stylesheet' href='#{settings.css_url}/#{sheet[:url]}?#{mtime}' media='screen' />\n"
-        end
-        ret
+        assets(:css, set).map { |sheet| "<link rel='stylesheet' href='#{sheet[:url]}' media='screen' />\n" }.join("")
       end
 
       # Returns the raw consolidated CSS/JS contents of a given type/set
@@ -220,13 +214,23 @@ module Sinatra
         specs = (assets_config type) [set]
         path = get_path type
         done = []
+        puts specs.inspect
         # `specs` will be a list of filespecs. Find all files that
         # match all specs.
         [specs].flatten.inject([]) do |ret, spec|
-          Dir["#{path}/#{spec}"].each do |filename|
+          filepath = "#{path}/#{spec}"
+          files = Dir[filepath]
+
+          # Add it anyway if it doesn't match anything
+          unless files.any? or done.include? filepath or filepath.include?('*')
+            ret << { :url => get_url(type, filepath), :path => filepath }
+            done << filepath
+          end
+
+          files.each do |filename|
             unless done.include? filename
               ret << {
-                :url => get_url(type, filename),
+                :url => get_url(type, filename) + "?#{File.mtime(filename).to_i}",
                 :path => filename
               }
               done << filename
