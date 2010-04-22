@@ -3,12 +3,6 @@ require 'yaml'
 module Sinatra
   module Minify
     class Builder
-      # Returns the root path of the main Sinatra application.
-      # Mimins the root_path functionality of Monk.`
-      def root_path(*args)
-        File.join(File.dirname(settings.app_file), *args)
-      end
-
       # Deletes all minified files.
       def clean
         [:js, :css].each do |type|
@@ -215,6 +209,13 @@ module Sinatra
           end
           ret
         end
+      end
+  
+    private
+      # Returns the root path of the main Sinatra application.
+      # Mimins the root_path functionality of Monk.`
+      def root_path(*args)
+        File.join(File.dirname(settings.app_file), *args)
       end
     end
   end
