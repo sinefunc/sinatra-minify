@@ -1,0 +1,6 @@
+js:
+  base:
+   script-*.js
+css:
+  base:
+    style-*.css
