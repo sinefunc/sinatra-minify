@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'yaml'
 
 begin
   require 'jsmin'
@@ -8,8 +9,9 @@ end
 
 module Sinatra
   module Minify
-    autoload :Builder, 'sinatra/minify/builder'
-    autoload :Helpers, 'sinatra/minify/helpers'
+    autoload :Builder,    'sinatra/minify/builder'
+    autoload :Compressor, 'sinatra/minify/compressor'
+    autoload :Helpers,    'sinatra/minify/helpers'
 
     def self.registered( app )
       app.helpers Helpers

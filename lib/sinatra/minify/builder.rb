@@ -3,23 +3,28 @@ module Sinatra
     class Builder
       GlobNoMatch = Class.new(StandardError)
 
-      attr :type
+      attr :type, :compressor
       
-      def self.clean
+      def self.clean(app_class = ::Main)
+        Builder.new(:js, app_class).compressor.clean
+        Builder.new(:css, app_class).compressor.clean
       end
 
-      def self.package
+      def self.package(app_class = ::Main)
+        Builder.new(:js, app_class).compressor.build
+        Builder.new(:css, app_class).compressor.build
       end
 
       def initialize(type, app_class = ::Main)
         @type       = type.to_s
         @app_class  = app_class 
+        @compressor = Compressor.new(@type, config.keys, public_dir, self)
       end
 
       def assets(set)
         if settings.minify?
           file = public_dir(minified_name(set))
-          build  unless File.exists?(file)
+          @compressor.build  unless File.exists?(file)
           mtime = File.mtime(file).to_i
 
           asset_include_tag public_url(minified_name(set)), mtime
@@ -28,12 +33,11 @@ module Sinatra
         end
       end
 
-    private
-      def enumerate_all_assets(set)
+      def files(set)
         specs = config[set]
         globs = Array(specs).map { |s| public_dir(s) }
 
-        files = globs.map { |glob| 
+        globs.map { |glob| 
           list = Dir[glob]
 
           if list.empty? and glob.include?('*')
@@ -42,11 +46,14 @@ module Sinatra
 
           list.empty? ? glob : list
         }.flatten.uniq
+      end
 
-        files.map { |file|
+    private
+      def enumerate_all_assets(set)
+        files(set).map { |file|
           mtime = File.mtime(file).to_i  if File.exist?(file)
 
-          asset_include_tag public_url(file.tr(public_dir, '')), mtime
+          asset_include_tag public_url(file.gsub(/^#{Regexp.escape(public_dir)}/, '')), mtime
         }.join("\n")
       end
 
@@ -74,7 +81,7 @@ module Sinatra
       end
 
       def public_url(relative_path)
-        File.join(settings.send("#{@type}_url"), relative_path)
+        File.join(settings.send("#{@type}_url"), relative_path).squeeze('/')
       end
 
       def minified_name(set)
