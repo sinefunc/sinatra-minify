@@ -2,17 +2,9 @@ require 'yaml'
 
 module Sinatra
   module Minify
-    module Helpers
-      def js_assets( set )
-        Builder.new(self.class).js_assets set
-      end
-
-      def css_assets( set )
-        Builder.new(self.class).css_assets set
-      end
-    end
-
     class Builder
+      # Returns the root path of the main Sinatra application.
+      # Mimins the root_path functionality of Monk.`
       def root_path( *args )
         root = File.dirname $0
         root = ROOT_DIR if defined? ROOT_DIR
@@ -30,6 +22,7 @@ module Sinatra
         end
       end
 
+      # Rebuilds the minified .min.js and .min.css files.
       def build
         out = []
         [:js, :css].each do |type|

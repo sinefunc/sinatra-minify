@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require File.join(File.dirname(__FILE__), 'minify/builder')
+require File.join(File.dirname(__FILE__), 'minify/helpers')
 
 module Sinatra
   module Minify
