@@ -1,15 +1,24 @@
+require 'yaml'
+
 module Sinatra
   module Minify
     module Helpers
       def js_assets( set )
         Builder.new(self.class).js_assets set
       end
+
       def css_assets( set )
         Builder.new(self.class).css_assets set
       end
     end
 
     class Builder
+      def root_path( *args )
+        root = File.dirname $0
+        root = ROOT_DIR if defined? ROOT_DIR
+        File.join(root, *args)
+      end
+
       def build
         out = []
         [:js, :css].each do |type|
@@ -37,7 +46,7 @@ module Sinatra
       #  - `type` (Symbol/string) - Can be either `:javascripts` or `:stylesheets`
       #
       def assets_config(type)
-        YAML::load(File.open(root_path "config/assets.yml")) [type.to_s]
+        ::YAML::load(File.open(root_path "config/assets.yml")) [type.to_s]
       end
 
       # Returns HTML code with `<script>` tags to include the scripts in a given `set`.
@@ -50,7 +59,7 @@ module Sinatra
       #   <%= js_assets 'base' %>
       #
       def js_assets( set )
-        if settings.production?
+        if settings.minify?
           "<script src='#{settings.js_url}/#{set}.min.js' type='text/javascript'></script>\n"
         else
           js_assets_all set
@@ -61,7 +70,7 @@ module Sinatra
         ret = ''
         assets(:js, set).each do |script|
           mtime = File.mtime(script[:path]).to_i
-          ret << "<script src=\"#{script[:url]}?#{mtime}\" type=\"text/javascript\"></script>\n"
+          ret << "<script src='#{script[:url]}?#{mtime}' type='text/javascript'></script>\n"
         end
         ret
       end
@@ -76,7 +85,7 @@ module Sinatra
       #   <%= css_assets 'base' %>
       #
       def css_assets( set )
-        if settings.production? 
+        if settings.minify?
           "<link rel='stylesheet' href='#{settings.css_url}/#{set}.min.css' media='screen' />\n"
         else
           css_assets_all set
@@ -187,27 +196,24 @@ module Sinatra
       #   - js_assets
       #
       def assets( type, set )
-        # type is either js or css
+        # type is either :js or :css
         specs = (assets_config type) [set]
         path = get_path type
-        ret = []
         done = []
         # `specs` will be a list of filespecs. Find all files that
         # match all specs.
-        if specs.class == Array
-          specs.each do |spec|
-            Dir["#{path}/#{spec}"].each do |filename|
-              unless done.include? filename
-                ret << {
-                  :url => get_url(type, filename),
-                  :path => filename
-                }
-                done << filename
-              end
+        [specs].flatten.inject([]) do |ret, spec|
+          Dir["#{path}/#{spec}"].each do |filename|
+            unless done.include? filename
+              ret << {
+                :url => get_url(type, filename),
+                :path => filename
+              }
+              done << filename
             end
           end
+          ret
         end
-        ret
       end
     end
   end

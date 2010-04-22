@@ -9,6 +9,11 @@ module Sinatra
       app.set :js_path, '/public/js' # => ~/myproject/public/js
       app.set :css_url, '/css'
       app.set :css_path, '/public/css'
+      app.disable :force_minify
+    end
+
+    def minify?
+      production? or force_minify
     end
   end
   register Minify

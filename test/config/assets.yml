@@ -1,0 +1,6 @@
+js:
+  base:
+   *.js
+css:
+  base:
+    *.css
