@@ -2,12 +2,14 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'rubygems'
-require 'sinatra'
+require 'sinatra/base'
 require 'sinatra/minify'
 
-ROOT_DIR = File.dirname(__FILE__)
+# ROOT_DIR = File.dirname(__FILE__)
 
 class App < Sinatra::Base
+  set :app_file, __FILE__
+
   register Sinatra::Minify
 
   get '/' do
