@@ -9,9 +9,9 @@ class TestMinify < Test::Unit::TestCase
     last_response.body
   end
 
-  def builder
-    Sinatra::Minify::Builder.new app
-  end
+  # def builder
+  #   Sinatra::Minify::Builder.new app
+  # end
 
   should "rock pants off" do
     get '/'
@@ -35,14 +35,18 @@ class TestMinify < Test::Unit::TestCase
 
     should "Include the minified script" do
       get '/foo'
+      File.open('tmp.html', 'w') { |f| f.write output }
+      `open tmp.html`
       assert_match /base.min.js\?/, output
     end
   end
 
   describe "Building files" do
     def setup
-      builder.clean
-      builder.build
+      Sinatra::Minify::Builder.clean
+      Sinatra::Minify::Builder.package
+      # builder.clean
+      # builder.build
     end
 
     should "Build properly" do
