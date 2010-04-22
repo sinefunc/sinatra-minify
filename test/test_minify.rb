@@ -20,8 +20,8 @@ class TestMinify < Test::Unit::TestCase
 
   should "Include all scripts" do
     get '/foo'
-    assert_match /script-1.js/, output
-    assert_match /script-2.js/, output
+    assert_match /\/js\/script-1.js\?/, output
+    assert_match /\/js\/script-2.js\?/, output
   end
 
   describe "In a production environment" do
@@ -35,7 +35,7 @@ class TestMinify < Test::Unit::TestCase
 
     should "Include the minified script" do
       get '/foo'
-      assert_match /base.min.js\?/, output
+      assert_match /\/js\/base.min.js\?/, output
     end
   end
 

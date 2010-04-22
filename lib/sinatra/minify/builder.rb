@@ -54,6 +54,8 @@ module Sinatra
       end
 
       # Returns HTML code with `<script>` tags to include the scripts in a given `set`.
+      # In a production environment, this tries to include the minified version of the
+      # files. If it doesn't exist, it falls back to the original files.
       #
       # Params:
       #   - `set` (String) - The set name, as defined in `config/assets.yml`.
@@ -63,11 +65,11 @@ module Sinatra
       #   <%= js_assets 'base' %>
       #
       def js_assets( set )
-        if settings.minify?
-          file = root_path settings.js_path, "#{set}.min.js"
-          build unless File.exists? file
-          mtime = File.mtime(file).to_i
-          "<script src='#{settings.js_url}/#{set}.min.js?#{mtime}' type='text/javascript'></script>\n"
+        min_file = root_path settings.js_path, "#{set}.min.js"
+        min_path = "/#{settings.js_url}/#{set}.min.js".squeeze("/")
+        if settings.minify? and File.exists? min_file
+          mtime = File.mtime(min_file).to_i
+          "<script src='#{min_path}?#{mtime}' type='text/javascript'></script>\n"
         else
           js_assets_all set
         end
@@ -82,6 +84,8 @@ module Sinatra
       end
 
       # Returns HTML code with `<link>` tags to include the stylesheets in a given `set`.
+      # In a production environment, this tries to include the minified version of the
+      # files. If it doesn't exist, it falls back to the original files.
       #
       # Params:
       #   - `set` (String) - The set name, as defined in `config/assets.yml`.
@@ -91,11 +95,11 @@ module Sinatra
       #   <%= css_assets 'base' %>
       #
       def css_assets( set )
-        if settings.minify?
-          file = root_path settings.css_path, "#{set}.min.css"
-          build unless File.exists? file
+        min_file = root_path settings.css_path, "#{set}.min.css"
+        min_path = "/#{settings.css_url}/#{set}.min.css".squeeze("/")
+        if settings.minify? and File.exists? min_file
           mtime = File.mtime(file).to_i
-          "<link rel='stylesheet' href='#{settings.css_url}/#{set}.min.css?#{mtime}' media='screen' />\n"
+          "<link rel='stylesheet' href='#{min_path}?#{mtime}' media='screen' />\n"
         else
           css_assets_all set
         end
@@ -123,15 +127,14 @@ module Sinatra
       end
 
       def minify_css( src )
-        src.gsub!(/\s+/, " ")         
-        src.gsub!(/\/\*(.*?)\*\//, "")
-        src.gsub!(/\} /, "}\n")       
-        src.gsub!(/\n$/, "")          
-        src.gsub!(/[ \t]*\{[ \t]*/, "{")
-        src.gsub!(/;[ \t]*\}/, "}") 
-
-        src.gsub!(/[ \t]*([,|{|}|>|:|;])[ \t]*/,"\\1") # Tersify
-        src.gsub!(/[ \t]*\n[ \t]*/, "") # Hardcore mode (no NLs)
+        src.gsub! /\s+/, " "
+        src.gsub! /\/\*(.*?)\*\//, ""
+        src.gsub! /\} /, "}\n"
+        src.gsub! /\n$/, ""
+        src.gsub! /[ \t]*\{[ \t]*/, "{"
+        src.gsub! /;[ \t]*\}/, "}"
+        src.gsub! /[ \t]*([,|{|}|>|:|;])[ \t]*/,"\\1" # Tersify
+        src.gsub! /[ \t]*\n[ \t]*/, "" # Hardcore mode (no NLs)
         src.strip
       end
 
