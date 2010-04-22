@@ -60,7 +60,10 @@ module Sinatra
       #
       def js_assets( set )
         if settings.minify?
-          "<script src='#{settings.js_url}/#{set}.min.js' type='text/javascript'></script>\n"
+          file = root_path settings.js_path, "#{set}.min.js"
+          build unless File.exists? file
+          mtime = File.mtime(file).to_i
+          "<script src='#{settings.js_url}/#{set}.min.js?#{mtime}' type='text/javascript'></script>\n"
         else
           js_assets_all set
         end
@@ -86,7 +89,10 @@ module Sinatra
       #
       def css_assets( set )
         if settings.minify?
-          "<link rel='stylesheet' href='#{settings.css_url}/#{set}.min.css' media='screen' />\n"
+          file = root_path settings.css_path, "#{set}.min.css"
+          build unless File.exists? file
+          mtime = File.mtime(file).to_i
+          "<link rel='stylesheet' href='#{settings.css_url}/#{set}.min.css?#{mtime}' media='screen' />\n"
         else
           css_assets_all set
         end

@@ -18,4 +18,11 @@ class App < Sinatra::Base
     output = ""
     output << js_assets('base')
   end
+
+  # Doesn't stop Sinatra::Application from running by default
+  def self.run?
+    false
+  end
 end
+
+App.run! if $0 == __FILE__

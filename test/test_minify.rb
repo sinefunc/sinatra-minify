@@ -31,7 +31,7 @@ class TestMinify < Test::Unit::TestCase
 
     should "Include the minified script" do
       get '/foo'
-      assert_match /base.min.js/, output
+      assert_match /base.min.js\?/, output
     end
   end
 end

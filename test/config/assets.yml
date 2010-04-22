@@ -1,6 +1,6 @@
 js:
   base:
-   *.js
+   script-*.js
 css:
   base:
-    *.css
+    style-*.css
