@@ -10,7 +10,7 @@ begin
     s.summary     = "CSS/JS compressor for Sinatra"
     s.homepage    = "http://www.github.com/sinefunc/sinatra-minify"
     s.description = "sinatra-minify is an extension for Sinatra to compress assets."
-    s.add_dependency('jsmin', '>= 1.0.1')
+    s.add_development_dependency 'rack-test'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

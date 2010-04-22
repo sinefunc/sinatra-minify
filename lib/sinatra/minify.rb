@@ -1,9 +1,16 @@
 require 'sinatra/base'
-require File.join(File.dirname(__FILE__), 'minify/builder')
-require File.join(File.dirname(__FILE__), 'minify/helpers')
+
+begin
+  require 'jsmin'
+rescue LoadError
+  require File.join(File.dirname(__FILE__), '..', '..', 'vendor/jsmin-1.0.1/lib/jsmin')
+end
 
 module Sinatra
   module Minify
+    autoload :Builder, 'sinatra/minify/builder'
+    autoload :Helpers, 'sinatra/minify/helpers'
+
     def self.registered( app )
       app.helpers Helpers
       app.set :js_url, '/js' # => http://site.com/js
