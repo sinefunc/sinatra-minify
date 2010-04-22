@@ -214,7 +214,6 @@ module Sinatra
         specs = (assets_config type) [set]
         path = get_path type
         done = []
-        puts specs.inspect
         # `specs` will be a list of filespecs. Find all files that
         # match all specs.
         [specs].flatten.inject([]) do |ret, spec|
