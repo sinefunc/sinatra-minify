@@ -1,7 +1,7 @@
 module Sinatra
   module Minify
     class Package
-      GlobNoMatch = Class.new(StandardError)
+      GlobNoMatchError = Class.new(StandardError)
 
       attr :type
       attr :set
@@ -60,7 +60,7 @@ module Sinatra
           list = Dir[glob]
 
           if list.empty? and glob.include?('*')
-            raise GlobNoMatch, "The spec `#{glob}` does not match any files."
+            raise GlobNoMatchError, "The spec `#{glob}` does not match any files."
           end
 
           list.empty? ? glob : list
