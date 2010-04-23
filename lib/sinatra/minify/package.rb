@@ -3,10 +3,7 @@ module Sinatra
     class Package
       GlobNoMatchError = Class.new(StandardError)
 
-      attr :type
-      attr :set
-      attr :compressor
-      attr :filename
+      attr :type, :set, :compressor, :filename
   
       def self.all(type, app_class = ::Main)
         config = Config.new(type, app_class)

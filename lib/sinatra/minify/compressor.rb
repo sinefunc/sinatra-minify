@@ -4,7 +4,7 @@ module Sinatra
       attr :type, :package, :file
 
       def initialize(type, file, package)
-        @type        = type
+        @type        = type.to_s
         @file        = file
         @package     = package
         @command     = :"minify_#{@type}"
