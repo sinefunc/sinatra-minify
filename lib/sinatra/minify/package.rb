@@ -35,9 +35,9 @@ module Sinatra
         @app_class  = app_class 
         @set        = set
         @config     = Config.new(@type, app_class)
-        @compressor = Compressor.new(@type, set, public_dir, self)
-
         @filename   = "#{set}.min.#{type}" 
+        @compressor = Compressor.new(@type, public_dir(@filename), self)
+
       end
 
       def html

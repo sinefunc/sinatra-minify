@@ -1,41 +1,36 @@
 module Sinatra
   module Minify
     class Compressor
-      attr :type
-      attr :set
-      attr :path_prefix
-      attr :package
+      attr :type, :package, :file
 
-      def initialize(type, set, path_prefix, package)
+      def initialize(type, file, package)
         @type        = type
-        @set         = set
-        @path_prefix = path_prefix
+        @file        = file
         @package     = package
+        @command     = :"minify_#{@type}"
 
         raise ArgumentError  if not ['js', 'css'].include?(type)
       end
 
       # Rebuilds the minified .min.* files.
       def build
-        absolute_path = File.join(path_prefix, "#{set}.min.#{type}")
-        File.open(absolute_path, 'w') { |f| f.write minify(combined) }
-        absolute_path
+        File.open(file, 'w') { |f| f.write minify(concatenated) }
+        file
       end
 
       # Deletes all minified files.
       def clean
-        absolute_path = File.join(path_prefix, "#{set}.min.#{type}")
-        File.unlink(absolute_path)  if File.exists?(absolute_path)
+        File.unlink(file)  if File.exists?(file)
       end
   
     private
       # TODO: decouple this further?
-      def combined
+      def concatenated
         package.files.map { |f| File.read(f) }.join("\n").strip
       end
 
       def minify(src)
-        send :"minify_#{@type}", src
+        send @command, src
       end
 
       def minify_css(src)
