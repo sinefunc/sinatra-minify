@@ -1,14 +1,13 @@
 module Sinatra
   module Minify
     module Helpers
-      def js_assets( set )
-        Builder.new(:js, self.class).assets(set)
+      def js_assets(set)
+        Package.new(:js, set, self.class).html
       end
 
-      def css_assets( set )
-        Builder.new(:css, self.class).assets(set)
+      def css_assets(set)
+        Package.new(:css, set, self.class).html
       end
     end
   end
 end
-

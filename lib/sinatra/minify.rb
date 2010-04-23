@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'yaml'
+require 'forwardable'
 
 begin
   require 'jsmin'
@@ -9,7 +10,8 @@ end
 
 module Sinatra
   module Minify
-    autoload :Builder,    'sinatra/minify/builder'
+    autoload :Config,     'sinatra/minify/config'
+    autoload :Package,    'sinatra/minify/package'
     autoload :Compressor, 'sinatra/minify/compressor'
     autoload :Helpers,    'sinatra/minify/helpers'
 

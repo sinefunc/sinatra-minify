@@ -1,40 +1,38 @@
 module Sinatra
   module Minify
     class Compressor
-      def initialize(type, sets, path_prefix, manifest)
-        @type        = type
-        @sets        = sets
-        @path_prefix = path_prefix
-        @manifest    = manifest
+      attr :type
+      attr :set
+      attr :path_prefix
+      attr :package
 
-        raise ArgumentError  if not ['js', 'css'].include?(@type)
+      def initialize(type, set, path_prefix, package)
+        @type        = type
+        @set         = set
+        @path_prefix = path_prefix
+        @package     = package
+
+        raise ArgumentError  if not ['js', 'css'].include?(type)
       end
 
       # Rebuilds the minified .min.* files.
       def build
-        @sets.map do |set|
-          absolute_path = File.join(@path_prefix, "#{set}.min.#{@type}")
-          File.open(absolute_path, 'w') { |f| f.write compress(set) }
-          absolute_path
-        end
+        # @sets.map do |set|
+        absolute_path = File.join(path_prefix, "#{set}.min.#{type}")
+        File.open(absolute_path, 'w') { |f| f.write minify(combined) }
+        # end
       end
 
       # Deletes all minified files.
       def clean
-        @sets.map do |set|
-          absolute_path = File.join(@path_prefix, "#{set}.min.#{@type}")
-          File.unlink(absolute_path)  if File.exists?(absolute_path)
-        end
+        absolute_path = File.join(path_prefix, "#{set}.min.#{type}")
+        File.unlink(absolute_path)  if File.exists?(absolute_path)
       end
   
     private
-      def compress(set)
-        minify combine(set)
-      end
-  
       # TODO: decouple this further?
-      def combine(set)
-        @manifest.files(set).map { |f| File.read(f) }.join("\n").strip
+      def combined
+        package.files.map { |f| File.read(f) }.join("\n").strip
       end
 
       def minify(src)
@@ -55,7 +53,7 @@ module Sinatra
       end
 
       def minify_js(src)
-        JSMin.minify src
+        JSMin.minify(src).strip
       end
     end
   end
