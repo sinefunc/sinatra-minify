@@ -3,7 +3,8 @@ namespace :minify do
   task :build do
     require 'init'
     puts "Building..."
-    files = Sinatra::Minify::Builder.new.build
+
+    files = Sinatra::Minify::Package.build
     files.each { |f| puts " * #{File.basename f}" }
     puts "Construction complete!"
   end

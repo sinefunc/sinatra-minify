@@ -21,8 +21,10 @@ module Sinatra
       end
 
       def self.build(app_class = ::Main)
-        Package.all(:js, app_class).each  { |p| p.compressor.build }
-        Package.all(:css, app_class).each { |p| p.compressor.build }
+        ret = []
+        ret << Package.all(:js, app_class).map  { |p| p.compressor.build }
+        ret << Package.all(:css, app_class).map { |p| p.compressor.build }
+        ret.flatten
       end
       
       extend Forwardable

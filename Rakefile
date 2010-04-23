@@ -50,3 +50,17 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+namespace :minify do
+  desc "Builds the example files in test/fixtures/exampleapp"
+  task :build_example do
+    $:.unshift File.dirname(__FILE__) + '/lib'
+
+    require 'test/fixtures/exampleapp/app'
+    puts "Building..."
+
+    files = Sinatra::Minify::Package.build(App)
+    files.each { |f| puts " * #{File.basename f}" }
+    puts "Construction complete!"
+  end
+end

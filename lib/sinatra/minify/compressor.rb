@@ -17,10 +17,9 @@ module Sinatra
 
       # Rebuilds the minified .min.* files.
       def build
-        # @sets.map do |set|
         absolute_path = File.join(path_prefix, "#{set}.min.#{type}")
         File.open(absolute_path, 'w') { |f| f.write minify(combined) }
-        # end
+        absolute_path
       end
 
       # Deletes all minified files.
