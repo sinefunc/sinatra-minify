@@ -4,26 +4,43 @@ module Sinatra
       GlobNoMatchError = Class.new(StandardError)
 
       attr :type, :set, :compressor, :filename
-  
-      def self.all(type, app_class = ::Main)
-        config = Config.new(type, app_class)
-        config.sets.keys.map do |set|
-          Package.new(type, set, app_class)
+
+      class << self
+        # Deletes all the different packaged and minified files
+        # You may pass in a different application object 
+        # e.g.
+        #
+        #   Sinatra::Minify::Package.clean(HelloWorld)
+        #
+        # as long as the appication has registered Sinatra::Minify
+        # 
+        # The files will be based on config/assets.yml
+        #
+        # See test/fixtures/exampleapp/config/assets.yml for an example
+        def clean(app_class = ::Main)
+          all(:js, app_class).each  { |p| p.compressor.clean }
+          all(:css, app_class).each { |p| p.compressor.clean }
+        end
+      
+        # Packages and minifies all of the files declared on config/assets.yml
+        # 
+        # Returns all of the minified files
+        def build(app_class = ::Main)
+          ret = []
+          ret << all(:js, app_class).map  { |p| p.compressor.build }
+          ret << all(:css, app_class).map { |p| p.compressor.build }
+          ret.flatten
+        end
+        
+      private
+        def all(type, app_class = ::Main)
+          config = Config.new(type, app_class)
+          config.sets.keys.map do |set|
+            Package.new(type, set, app_class)
+          end
         end
       end
 
-      def self.clean(app_class = ::Main)
-        Package.all(:js, app_class).each  { |p| p.compressor.clean }
-        Package.all(:css, app_class).each { |p| p.compressor.clean }
-      end
-
-      def self.build(app_class = ::Main)
-        ret = []
-        ret << Package.all(:js, app_class).map  { |p| p.compressor.build }
-        ret << Package.all(:css, app_class).map { |p| p.compressor.build }
-        ret.flatten
-      end
-      
       extend Forwardable
       def_delegators :@config, :public_url, :public_dir, :sets, :js_url, :css_url
 

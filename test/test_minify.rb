@@ -22,7 +22,7 @@ class TestMinify < Test::Unit::TestCase
   
   describe "Package.all(:js)" do
     setup do
-      @packages = Sinatra::Minify::Package.all(:js, App)
+      @packages = Sinatra::Minify::Package.send(:all, :js, App)
     end
   
     should "have only one package" do
@@ -36,7 +36,7 @@ class TestMinify < Test::Unit::TestCase
 
   describe "Package.all(:css)" do
     setup do
-      @packages = Sinatra::Minify::Package.all(:css, App)
+      @packages = Sinatra::Minify::Package.send(:all, :css, App)
     end
   
     should "have only one package" do
