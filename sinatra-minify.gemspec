@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sinatra-minify}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["sinefunc"]
@@ -22,10 +22,13 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/sinatra/minify.rb",
-     "lib/sinatra/minify/builder.rb",
+     "lib/sinatra/minify/compressor.rb",
+     "lib/sinatra/minify/config.rb",
      "lib/sinatra/minify/helpers.rb",
+     "lib/sinatra/minify/package.rb",
      "lib/tasks.rake",
      "sinatra-minify.gemspec",
+     "test/fixtures/control/style-default-compressed.css",
      "test/fixtures/exampleapp/app.rb",
      "test/fixtures/exampleapp/config/assets.yml",
      "test/fixtures/exampleapp/public/css/style-default.css",
