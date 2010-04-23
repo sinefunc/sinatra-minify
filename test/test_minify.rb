@@ -92,4 +92,17 @@ class TestMinify < Test::Unit::TestCase
       assert_equal 9, unknown.index('aoeu=456;')
     end
   end
+
+  describe "second config file" do
+    def setup
+      app.set :minify_config, 'config/assets-glob_error.yml'
+    end
+
+    should "throw an error on an invalid glob" do
+      package = Sinatra::Minify::Package.new(:js, 'base', app)
+      assert_raise Sinatra::Minify::GlobNoMatchError do
+        package.html
+      end
+    end
+  end
 end

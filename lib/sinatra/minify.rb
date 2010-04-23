@@ -15,12 +15,15 @@ module Sinatra
     autoload :Compressor, 'sinatra/minify/compressor'
     autoload :Helpers,    'sinatra/minify/helpers'
 
+    GlobNoMatchError = Class.new(StandardError)
+    
     def self.registered( app )
       app.helpers Helpers
       app.set :js_url, '/js' # => http://site.com/js
       app.set :js_path, '/public/js' # => ~/myproject/public/js
       app.set :css_url, '/css'
       app.set :css_path, '/public/css'
+      app.set :minify_config, 'config/assets.yml'
       app.disable :force_minify
     end
 

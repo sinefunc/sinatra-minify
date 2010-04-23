@@ -1,8 +1,6 @@
 module Sinatra
   module Minify
     class Package
-      GlobNoMatchError = Class.new(StandardError)
-
       attr :type, :set, :compressor, :filename
 
       class << self
@@ -57,9 +55,7 @@ module Sinatra
       def html
         if @app_class.minify?
           file = public_dir(filename)
-          @compressor.build  unless File.exists?(file)
-          mtime = File.mtime(file).to_i
-
+          mtime = File.exists?(file) ? File.mtime(file).to_i : ''
           asset_include_tag public_url(filename), mtime
         else
           enumerate_all_assets

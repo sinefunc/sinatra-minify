@@ -26,8 +26,12 @@ module Sinatra
         File.join(File.dirname(@settings.app_file), *args)
       end
 
+      def config_file
+        @settings.minify_config
+      end
+
       def sets
-        YAML.load_file(root_path("config/assets.yml"))[@type]
+        YAML.load_file(root_path(config_file))[@type]
       end
     end
   end
