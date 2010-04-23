@@ -9,10 +9,6 @@ class TestMinify < Test::Unit::TestCase
     last_response.body
   end
 
-  def builder
-    Sinatra::Minify::Builder.new app
-  end
-
   should "rock pants off" do
     get '/'
     assert_match "Hello", output
@@ -22,6 +18,34 @@ class TestMinify < Test::Unit::TestCase
     get '/foo'
     assert_match /\/js\/script-1.js\?/, output
     assert_match /\/js\/script-2.js\?/, output
+  end
+  
+  describe "Package.all(:js)" do
+    setup do
+      @packages = Sinatra::Minify::Package.all(:js, App)
+    end
+  
+    should "have only one package" do
+      assert_equal 1, @packages.size
+    end
+
+    should "return base as the only package" do
+      assert_equal 'base', @packages.first.set
+    end
+  end
+
+  describe "Package.all(:css)" do
+    setup do
+      @packages = Sinatra::Minify::Package.all(:css, App)
+    end
+  
+    should "have only one package" do
+      assert_equal 1, @packages.size
+    end
+
+    should "return base as the only package" do
+      assert_equal 'base', @packages.first.set
+    end
   end
 
   describe "In a production environment" do
@@ -41,12 +65,31 @@ class TestMinify < Test::Unit::TestCase
 
   describe "Building files" do
     def setup
-      builder.clean
-      builder.build
+      Sinatra::Minify::Package.clean(App)
+      Sinatra::Minify::Package.build(App)
     end
 
-    should "Build properly" do
-      assert true
+    should "at least create the files" do
+      assert File.exist?(File.dirname(App.app_file) + '/public/js/base.min.js')
+      assert File.exist?(File.dirname(App.app_file) + '/public/css/base.min.css')
+    end
+
+    should "include the css file in base.min.css" do
+      control = File.read('test/fixtures/control/style-default-compressed.css')
+      unknown = File.read(File.dirname(App.app_file) + '/public/css/base.min.css')
+
+      assert unknown.include?(control)
+    end
+
+    should "include the script-1 file first in base.min.js" do
+      unknown = File.read(File.dirname(App.app_file) + '/public/js/base.min.js')
+      assert_equal 0, unknown.index('aoeu=234;')
+    end
+
+    should "include the script-2 file second in base.min.js" do
+      unknown = File.read(File.dirname(App.app_file) + '/public/js/base.min.js')
+
+      assert_equal 9, unknown.index('aoeu=456;')
     end
   end
 end

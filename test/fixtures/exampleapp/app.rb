@@ -11,7 +11,7 @@ class App < Sinatra::Base
   set :app_file, __FILE__
 
   register Sinatra::Minify
-
+  enable :raise_errors
   get '/' do
     "Hello"
   end
