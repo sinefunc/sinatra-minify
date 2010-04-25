@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'test/unit'
-#require 'shoulda'
 require 'contest'
 require 'rack/test'
 
