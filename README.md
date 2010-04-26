@@ -13,13 +13,14 @@ Add these to your app's main file:
       register Sinatra::Minify
     end
 
-Add this to your `Rakefile`:
+Add this to your app's `Rakefile`:
 
     load 'vendor/sinatra-minify/lib/tasks.rake'
 
 Now add your JS/CSS packages in `config/assets.yml` (relative to your app's root path).
 The files are are assumed to be in `public/js` and `public/css` by default.
 
+    # config/assets.yml
     js:
       base:
         - jquery-1.4.2.js
@@ -34,6 +35,7 @@ The files are are assumed to be in `public/js` and `public/css` by default.
 
 Now add the helpers to your templates:
 
+    # views/layout.erb (for example)
        ...
        <%= css_assets 'base' %>
        <%= css_assets 'homepage' %>
@@ -116,3 +118,10 @@ Ignore minified files in source control
 It'd be good practice to add `*.min.{css,js}` to your `.gitignore` file (or similar,
 for those not using Git).
 
+Authors
+-------
+
+Sinatra-minify is co-authored by Rico Sta. Cruz and Cyril David of Sinefunc, Inc.
+See more of our work on [www.sinefunc.com](http://www.sinefunc.com)!
+
+(c) 2010 Rico Sta. Cruz, Cyril David and Sinefunc, Inc. See the LICENSE file for more details.
