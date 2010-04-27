@@ -5,7 +5,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name        = "sinatra-minify"
-    s.authors     = ["sinefunc"]
+    s.authors     = ["Rico Sta. Cruz", "Cyril David", "Sinefunc, Inc."]
     s.email       = "info@sinefunc.com"
     s.summary     = "CSS/JS compressor for Sinatra"
     s.homepage    = "http://www.github.com/sinefunc/sinatra-minify"

@@ -119,9 +119,12 @@ It'd be good practice to add `*.min.{css,js}` to your `.gitignore` file (or simi
 for those not using Git).
 
 Authors
--------
+=======
 
 Sinatra-minify is co-authored by Rico Sta. Cruz and Cyril David of Sinefunc, Inc.
 See more of our work on [www.sinefunc.com](http://www.sinefunc.com)!
+
+Copyright
+---------
 
 (c) 2010 Rico Sta. Cruz, Cyril David and Sinefunc, Inc. See the LICENSE file for more details.
