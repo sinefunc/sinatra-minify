@@ -1,3 +1,6 @@
+require 'fileutils'
+require 'open-uri'
+
 module Sinatra
   module Minify
     class Compressor
@@ -8,12 +11,14 @@ module Sinatra
         @file        = file
         @package     = package
         @command     = :"minify_#{@type}"
+        @host        = ENV["MINIFY_SITE_URL"] || "http://localhost:4567"
 
         raise ArgumentError  if not ['js', 'css'].include?(type)
       end
 
       # Rebuilds the minified .min.* files.
       def build
+        FileUtils.mkdir_p(File.dirname(file))
         File.open(file, 'w') { |f| f.write minify(concatenated) }
         file
       end
@@ -26,7 +31,14 @@ module Sinatra
     private
       # TODO: decouple this further?
       def concatenated
-        package.files.map { |f| File.read(f) }.join("\n").strip
+        package.files.map { |f|
+          if File.exist?(f)
+            File.read(f)
+          else
+            path = f.split('public').last
+            open("#{ @host }#{ path}").read
+          end
+        }.join("\n").strip
       end
 
       def minify(src)

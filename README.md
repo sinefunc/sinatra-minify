@@ -118,6 +118,26 @@ Ignore minified files in source control
 It'd be good practice to add `*.min.{css,js}` to your `.gitignore` file (or similar,
 for those not using Git).
 
+Using sinatra-minify with Less / Sass
+-------------------------------------
+
+Let's say you have some routes like
+
+    get '/css/:file.css' do
+      # some code here that opens the less file
+    end
+
+In order to properly minify this, the application must be running when
+you do `rake minify:build`. By default, we assume you have your app running in
+`http://localhost:4567`, but you can easily override this by doing:
+
+    # First let's run your application. Let's say it's a rack app:
+    rackup config.ru
+
+    # Now specify the URL via:
+    MINIFY_SITE_URL=http://localhost:9292 rake minify:build
+
+
 Authors
 =======
 

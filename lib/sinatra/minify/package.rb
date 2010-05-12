@@ -91,9 +91,9 @@ module Sinatra
       def asset_include_tag(path, mtime)
         case type
         when 'js'
-          "<script src='#{js_url}/#{path}?#{mtime}' type='text/javascript'></script>"
+          "<script src='#{path}?#{mtime}' type='text/javascript'></script>"
         when 'css'
-          "<link rel='stylesheet' href='#{css_url}/#{path}?#{mtime}' media='screen' />"
+          "<link rel='stylesheet' href='#{path}?#{mtime}' media='screen' />"
         else
           raise ArgumentError, "only js/css are supported"
         end
