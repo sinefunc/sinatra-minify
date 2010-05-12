@@ -5,19 +5,21 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sinatra-minify}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["sinefunc"]
-  s.date = %q{2010-04-23}
+  s.authors = ["Rico Sta. Cruz", "Cyril David", "Sinefunc, Inc."]
+  s.date = %q{2010-05-12}
   s.description = %q{sinatra-minify is an extension for Sinatra to compress assets.}
   s.email = %q{info@sinefunc.com}
   s.extra_rdoc_files = [
-    "README.md"
+    "LICENSE",
+     "README.md"
   ]
   s.files = [
     ".gitignore",
      ".rvmrc",
+     "LICENSE",
      "README.md",
      "Rakefile",
      "VERSION",
@@ -30,6 +32,7 @@ Gem::Specification.new do |s|
      "sinatra-minify.gemspec",
      "test/fixtures/control/style-default-compressed.css",
      "test/fixtures/exampleapp/app.rb",
+     "test/fixtures/exampleapp/config/assets-glob_error.yml",
      "test/fixtures/exampleapp/config/assets.yml",
      "test/fixtures/exampleapp/public/css/style-default.css",
      "test/fixtures/exampleapp/public/js/script-1.js",
