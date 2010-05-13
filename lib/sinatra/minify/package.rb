@@ -45,7 +45,7 @@ module Sinatra
       def initialize(type, set, app_class = ::Main)
         @type       = type.to_s
         @app_class  = app_class 
-        @set        = set
+        @set        = set.to_s
         @config     = Config.new(@type, app_class)
         @filename   = "#{set}.min.#{type}" 
         @compressor = Compressor.new(@type, public_dir(@filename), self)
