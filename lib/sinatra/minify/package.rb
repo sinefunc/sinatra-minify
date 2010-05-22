@@ -93,7 +93,7 @@ module Sinatra
         when 'js'
           "<script src='#{path}?#{mtime}' type='text/javascript'></script>"
         when 'css'
-          "<link rel='stylesheet' href='#{path}?#{mtime}' media='screen' />"
+          "<link rel='stylesheet' href='#{path}?#{mtime}' media='all' />"
         else
           raise ArgumentError, "only js/css are supported"
         end
