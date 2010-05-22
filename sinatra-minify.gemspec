@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sinatra-minify}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rico Sta. Cruz", "Cyril David", "Sinefunc, Inc."]
-  s.date = %q{2010-05-12}
+  s.date = %q{2010-05-22}
   s.description = %q{sinatra-minify is an extension for Sinatra to compress assets.}
   s.email = %q{info@sinefunc.com}
   s.extra_rdoc_files = [
