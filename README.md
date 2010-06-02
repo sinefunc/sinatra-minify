@@ -15,7 +15,19 @@ Add these to your app's main file:
 
 Add this to your app's `Rakefile`:
 
-    load 'vendor/sinatra-minify/lib/tasks.rake'
+    desc "Builds the minified CSS and JS assets."
+    task :minify do
+      require 'init.rb'   # <= change this
+      puts "Building..."
+
+      files = Sinatra::Minify::Package.build(Main)  # <= change this
+      files.each { |f| puts " * #{File.basename f}" }
+      puts "Construction complete!"
+    end
+
+    # Be sure to change the values above. They assume that your main
+    # file is called 'init.rb' and that your Application class is called
+    # 'Main'.
 
 Now add your JS/CSS packages in `config/assets.yml` (relative to your app's root path).
 The files are are assumed to be in `public/js` and `public/css` by default.
@@ -58,12 +70,14 @@ Usage tips
 Building minified files
 -----------------------
 
-Minified files are built by typing:
+After editing your Rakefile, the minified files can be built by typing:
 
-    rake minify:build
+    rake minify
 
 This creates files called `<package_name>.min.js` (and `.css`) in your `public/js` and
 `public/css` folders.
+
+Make sure your app is running on `http://localhost:4567` before doing this!
 
 NOTE: Building of minified files is NOT done automatically! You must call this explicitly.
 Add it to your Capistrano deploy scripts or something.
