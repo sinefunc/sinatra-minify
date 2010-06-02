@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Documentation by YARD 0.5.4</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><div id='filecontents'><h1>sinatra-minify</h1>
+
+<h2>Quick-start guide</h2>
+
+<p>First, install the <code>sinatra-minify</code> gem.</p>
+
+<p>Add these to your app's main file:</p>
+
+<pre class="code"><span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>sinatra/minify</span><span class='tstring_end'>'</span></span>
+<span class='kw'>class</span> <span class='const'>Main</span> <span class='op'>&lt;</span> <span class='const'>Sinatra</span><span class='op'>::</span><span class='const'>Base</span>
+  <span class='id register'>register</span> <span class='const'>Sinatra</span><span class='op'>::</span><span class='const'>Minify</span>
+<span class='kw'>end</span>
+</pre>
+
+<p>Add this to your app's <code>Rakefile</code>:</p>
+
+<pre class="code"><span class='id desc'>desc</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Builds the minified CSS and JS assets.</span><span class='tstring_end'>&quot;</span></span>
+<span class='id task'>task</span> <span class='symbol'>:minify</span> <span class='kw'>do</span>
+  <span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>init.rb</span><span class='tstring_end'>'</span></span>   <span class='comment'># &lt;= change this
+</span>  <span class='id puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Building...</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='id files'>files</span> <span class='op'>=</span> <span class='const'>Sinatra</span><span class='op'>::</span><span class='const'>Minify</span><span class='op'>::</span><span class='const'>Package</span><span class='period'>.</span><span class='id build'>build</span><span class='lparen'>(</span><span class='const'>Main</span><span class='rparen'>)</span>  <span class='comment'># &lt;= change this
+</span>  <span class='id files'>files</span><span class='period'>.</span><span class='id each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id f'>f</span><span class='op'>|</span> <span class='id puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> * </span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id basename'>basename</span> <span class='id f'>f</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+  <span class='id puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Construction complete!</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span>
+
+<span class='comment'># Be sure to change the values above. They assume that your main
+</span><span class='comment'># file is called 'init.rb' and that your Application class is called
+</span><span class='comment'># 'Main'.
+</span></pre>
+
+<p>Now add your JS/CSS packages in <code>config/assets.yml</code> (relative to your app's root path).
+The files are are assumed to be in <code>public/js</code> and <code>public/css</code> by default.</p>
+
+<pre class="code"># config/assets.yml
+js:
+  base:
+    - jquery-1.4.2.js
+    - underscore-0.6.0.js
+    - app/*.js                 # Wildcards are allowed! ;)
+css:
+  base:
+    - common.css
+    - app.*.css
+  homepage:
+    - home.*.css
+</pre>
+
+<p>Now add the helpers to your templates:</p>
+
+<pre class="code"># views/layout.erb (for example)
+   ...
+   &lt;%= css_assets 'base' %&gt;
+   &lt;%= css_assets 'homepage' %&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    ...
+    &lt;%= js_assets 'base' %&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;!-- The 'base' and 'homepage' above are the names of the
+     packages as defined in your config/assets.yml. --&gt;
+</pre>
+
+<p>This will include the scripts and stylesheets as individual <code>&lt;script&gt;</code> and <code>&lt;link&gt;</code> tags.
+To include the minified files instead, switch to the production environment and build
+the minified files by typing <code>rake minify:build</code>.</p>
+
+<h1>Usage tips</h1>
+
+<h2>Building minified files</h2>
+
+<p>After editing your Rakefile, the minified files can be built by typing:</p>
+
+<pre class="code"><span class='id rake'>rake</span> <span class='id minify'>minify</span>
+</pre>
+
+<p>This creates files called <code>&lt;package_name&gt;.min.js</code> (and <code>.css</code>) in your <code>public/js</code> and
+<code>public/css</code> folders.</p>
+
+<p>Make sure your app is running on <code>http://localhost:4567</code> before doing this!</p>
+
+<p>NOTE: Building of minified files is NOT done automatically! You must call this explicitly.
+Add it to your Capistrano deploy scripts or something.</p>
+
+<h2>Adding sinatra-minify as a dependency (Monk)</h2>
+
+<p>If your using Monk (or otherwise using the <code>dependency</code> gem), simply add the
+<code>sinatra-minify</code> GitHub repo to your dependencies file.</p>
+
+<pre class="code">echo sinatra-minify git://github.com/sinefunc/sinatra-minify.git &gt;&gt; dependencies
+dep vendor sinatra-minify
+</pre>
+
+<h2>Changing JS/CSS paths</h2>
+
+<p>By default, sinatra-minify looks at <code>public/js</code> and <code>public/css</code> for your JS and CSS files,
+respectively. You can change them with:</p>
+
+<pre class="code">class Main &lt; Sinatra::Base
+    register Sinatra::Minify
+
+    set :js_path, 'public/javascripts'
+    set :js_url,  '/javascripts'
+
+    set :css_path, 'public/stylesheets'
+    set :css_url,  '/stylesheets'
+</pre>
+
+<h2>Forcing minification</h2>
+
+<p>Minifying happens in the production environment only by default. You can force this behavior
+by enabling the <code>force_minify</code> option in your app:</p>
+
+<pre class="code">class Main &lt; Sinatra::Base
+    register Sinatra::Minify
+
+    # Always minify
+    enable :force_minify
+</pre>
+
+<p>You can also define your own behavior for checking whether to minify or not.</p>
+
+<pre class="code">class Main &lt; Sinatra::Base
+    register Sinatra::Minify
+    def self.minify?
+      prodiction? or staging?
+    end
+</pre>
+
+<h2>Ignore minified files in source control</h2>
+
+<p>It'd be good practice to add <code>*.min.{css,js}</code> to your <code>.gitignore</code> file (or similar,
+for those not using Git).</p>
+
+<h2>Using sinatra-minify with Less / Sass</h2>
+
+<p>Let's say you have some routes like</p>
+
+<pre class="code"><span class='id get'>get</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/css/:file.css</span><span class='tstring_end'>'</span></span> <span class='kw'>do</span>
+  <span class='comment'># some code here that opens the less file
+</span><span class='kw'>end</span>
+</pre>
+
+<p>In order to properly minify this, the application must be running when
+you do <code>rake minify:build</code>. By default, we assume you have your app running in
+<code>http://localhost:4567</code>, but you can easily override this by doing:</p>
+
+<pre class="code"># First let's run your application. Let's say it's a rack app:
+rackup config.ru
+
+# Now specify the URL via:
+MINIFY_SITE_URL=http://localhost:9292 rake minify:build
+</pre>
+
+<h1>Authors</h1>
+
+<p>Sinatra-minify is co-authored by Rico Sta. Cruz and Cyril David of Sinefunc, Inc.
+See more of our work on <a href="http://www.sinefunc.com">www.sinefunc.com</a>!</p>
+
+<h2>Copyright</h2>
+
+<p>(c) 2010 Rico Sta. Cruz, Cyril David and Sinefunc, Inc. See the LICENSE file for more details.</p></div></div>
+    
+    <div id="footer">
+  Generated on Wed Jun  2 09:51:18 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.4 (ruby-1.9.1).
+</div>
+
+  </body>
+</html>
