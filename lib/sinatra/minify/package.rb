@@ -1,7 +1,10 @@
 module Sinatra
   module Minify
     class Package
-      attr :type, :set, :compressor, :filename
+      attr :type
+      attr :set
+      attr :compressor
+      attr :filename
 
       class << self
         # Deletes all the different packaged and minified files

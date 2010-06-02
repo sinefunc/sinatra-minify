@@ -4,7 +4,9 @@ require 'open-uri'
 module Sinatra
   module Minify
     class Compressor
-      attr :type, :package, :file
+      attr :type
+      attr :package
+      attr :file
 
       def initialize(type, file, package)
         @type        = type.to_s
