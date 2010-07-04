@@ -1,7 +1,7 @@
 namespace :minify do
   desc "Builds the minified CSS and JS assets."
   task :build do
-    require 'init'
+    require './init'
     puts "Building..."
 
     files = Sinatra::Minify::Package.build
