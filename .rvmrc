@@ -1,1 +1,1 @@
-rvm 1.9.1@sinatra-minify
+rvm --create use 1.9.2@sinatra-minify
