@@ -19,7 +19,7 @@ module Sinatra
       end
 
       def public_url(path)
-        File.join(@settings.send("#{@type}_url"), path).squeeze('/')
+        File.join(@settings.send("#{@type}_url"), path)
       end
 
       def root_path(*args)

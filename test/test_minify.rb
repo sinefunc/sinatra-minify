@@ -105,4 +105,30 @@ class TestMinify < Test::Unit::TestCase
       end
     end
   end
+
+  describe "config" do
+    def setup
+      @app = App
+      @config = Sinatra::Minify::Config.new('js', @app)
+    end
+
+    def teardown
+      @app.set :js_url, "/js"
+    end
+
+    should "not remove http://" do
+      @app.set :js_url, "http://example.com"
+      assert_equal "http://example.com/js", @config.public_url("/js")
+    end
+
+    should "not remove https://" do
+      @app.set :js_url, "https://example.com"
+      assert_equal "https://example.com/js", @config.public_url("/js")
+    end
+
+    should "remove double slash in url" do
+      @app.set :js_url, "https://example.com/"
+      assert_equal "https://example.com/js", @config.public_url("/js")
+    end
+  end
 end
